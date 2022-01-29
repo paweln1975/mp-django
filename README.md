@@ -1,1 +1,1 @@
-# mp-django
+# Mastering Python - Django
