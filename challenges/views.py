@@ -1,6 +1,7 @@
-# from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
+from django.shortcuts import render
+from django.http import Http404, HttpResponseRedirect
 from django.urls import reverse
+
 
 # Create your views here.
 challenges = {
@@ -14,8 +15,8 @@ challenges = {
     "august": "Default august challenge",
     "september": "Default september challenge",
     "october": "Default october challenge",
-    "november": "Default november challenge",
-    "december": "Default december challenge",
+    "november": None,
+    "december": None,
 
 }
 
@@ -27,18 +28,21 @@ def index(request):
         month_path = reverse("month-challenge", args=[month])
         list_items += f"<li><a href=\"{month_path}\">{month}</a></li>"
 
-    return HttpResponse(f"<ul>{list_items}</ul>")
+    return render(request, "challenges/index.html", {
+        "months": months
+    })
 
 
 def month_challenge(request, month):
     try:
         challenge = challenges[month]
-        response = HttpResponse(challenge)
+        response = render(request, "challenges/challenge.html", {
+            'month': month,
+            'text': challenge
+        })
+        return response
     except KeyError:
-        challenge = "Month is not supported"
-        response = HttpResponseNotFound(challenge)
-
-    return response
+        raise Http404()
 
 
 def month_challenge_by_number(request, month):
@@ -47,4 +51,9 @@ def month_challenge_by_number(request, month):
         redirect_path = reverse("month-challenge", args=[months[month-1]])
         return HttpResponseRedirect(redirect_path)
     else:
-        return HttpResponseNotFound("Invalid month")
+        raise Http404()
+
+
+def template_loader(request):
+    return render(request, template_name="challenges/index.html")
+
