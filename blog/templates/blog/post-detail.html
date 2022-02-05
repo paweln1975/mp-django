@@ -1,0 +1,36 @@
+{% extends "blog.html" %}
+{% load static %}
+
+{% block page_title %}
+Mountain visit
+{% endblock %}
+
+{% block css_styles %}
+<link rel="stylesheet" href="{% static 'blog/post-detail.css' %}">
+
+{% endblock %}
+
+{% block content %}
+<section id="summary">
+    <h2>
+        Post Title
+    </h2>
+    <article>
+        <img src="{% static 'blog/images/mountains.jpg' %}" alt="Mountain hiking" />
+        <address>By Pawel</address>
+        <div>Last updated on <time>July</time>
+        </div>
+    </article>
+</section>
+<main>
+    <p>
+        This is first line!
+    </p>
+    <p>
+        This is second line!
+    </p>
+    <p>
+        This is third line!
+    </p>
+</main>
+{% endblock%}

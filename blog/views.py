@@ -1,17 +1,16 @@
 from django.shortcuts import render
-from django.http import HttpResponse
 
 # Create your views here.
 
 
-def starting_page(request):
-    return HttpResponse("List of latest 3 blogs")
+def index(request):
+    return render(request, "blog/index.html")
 
 
 def posts(request):
-    return HttpResponse("List of latest all blogs")
+    return render(request, "blog/all-posts.html")
 
 
-def post_detail(request):
-    return HttpResponse("Post detail")
+def post_detail(request, slug):
+    return render(request, "blog/post-detail.html")
 
