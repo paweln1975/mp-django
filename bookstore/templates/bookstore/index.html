@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_title %}
+Book store
+{% endblock %}
+
+{% block css_styles %}
+
+
+{% endblock %}
+
+{% block content %}
+<ul>
+    {% for book in books %}
+    <li><a href="{{ book.get_absolute_url }}">{{book.title}}</a> (Rating: {{ book.rating }})</li>
+    {% endfor %}
+</ul>
+<hr>
+<p>Total number of books: {{ number_of_books }}
+<br>Average rating: {{ avg_rating.rating__avg}}
+<br>Min rating: {{ avg_rating.rating__min}}
+<br>Max rating: {{ avg_rating.rating__max}}</p>
+{% endblock %}

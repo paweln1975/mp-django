@@ -3,13 +3,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{% block page_title %}My challenges{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'styles.css' %}">
-    <link rel="stylesheet" href="{% static 'header.css' %}">
+    <title>{% block page_title %}Default page title{% endblock %}</title>
+
     {% block css_styles %}
     {% endblock %}
 </head>
 <body>
-{% block content %} Empty content{% endblock %}
+{% block content %}Default empty content{% endblock %}
 </body>
 </html>
