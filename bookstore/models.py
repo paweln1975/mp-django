@@ -1,8 +1,7 @@
 from django.db import models
-from django.core.validators import MaxValueValidator, MinValueValidator
+from django.core.validators import MinLengthValidator, MaxValueValidator, MinValueValidator
 from django.urls import reverse
 from django.utils.text import slugify
-# Create your models here.
 
 
 class Country(models.Model):
@@ -63,3 +62,9 @@ class Book(models.Model):
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
         super().save(*args, **kwargs)
+
+
+class Review(models.Model):
+    user_name = models.CharField(max_length=50, null=False)
+    review_text = models.TextField(max_length=400, null=False, validators=[MinLengthValidator(10)])
+    rating = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
