@@ -9,3 +9,7 @@ class ReviewForm(forms.ModelForm):
         labels = {
             "user_name": "Your name"
         }
+
+
+class ProfileForm(forms.Form):
+    user_image = forms.FileField(allow_empty_file=False)

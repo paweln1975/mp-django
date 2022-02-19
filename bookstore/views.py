@@ -1,11 +1,13 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Book, Review
+from .models import Book, Review, Profile
 from django.db.models import Avg, Min, Max
-from .forms import ReviewForm
+from .forms import ReviewForm, ProfileForm
+from django.views import View
 from django.views.generic import ListView, DetailView
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import CreateView, UpdateView
 from django.urls import reverse
+from django.http import HttpResponseRedirect
 
 
 def index(request):
@@ -71,3 +73,40 @@ class ThankYouView(TemplateView):
         context["message"] = "This works!"
         return context
 
+
+def store_file(file):
+    with open("temp/image.jpg", "wb+") as dest:
+        for chunk in file.chunks():
+            dest.write(chunk)
+
+
+class CreateProfileView(View):
+    def get(self, request):
+        form = ProfileForm()
+        return render(request, "bookstore/create_profile.html", {
+            "form": form
+        })
+
+    def post(self, request):
+        submitted_form = ProfileForm(request.POST, request.FILES)
+        if submitted_form.is_valid():
+            profile = Profile(image=request.FILES["user_image"], file_name=request.FILES["user_image"])
+            profile.save()
+            return HttpResponseRedirect("thank-you")
+
+        return render(request, "bookstore/create_profile.html"), {
+            "form": submitted_form
+        }
+
+
+class CreateProfileViewBased(CreateView):
+    template_name = "bookstore/create_profile.html"
+    model = Profile
+    fields = ["image"]
+    success_url = "thank-you"
+
+
+class ProfilesView(ListView):
+    template_name = "bookstore/profiles.html"
+    model = Profile
+    context_object_name = "profiles"

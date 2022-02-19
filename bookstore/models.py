@@ -68,3 +68,14 @@ class Review(models.Model):
     user_name = models.CharField(max_length=50, null=False)
     review_text = models.TextField(max_length=400, null=False, validators=[MinLengthValidator(10)])
     rating = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
+
+
+class Profile(models.Model):
+    file_name = models.CharField(max_length=500)
+    image = models.FileField(upload_to="images")
+
+    def full_name(self):
+        return f"{self.file_name} {self.image.name} {self.image.path}"
+
+    def __str__(self):
+        return self.full_name()

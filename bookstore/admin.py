@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Book, Author, Address, Country, Review
+from django.contrib.admin import display
+from .models import Book, Author, Address, Country, Review, Profile
 # Register your models here.
 
 
@@ -25,8 +26,17 @@ class CountryAdmin(admin.ModelAdmin):
     list_display = ("name",)
 
 
+class ProfileAdmin(admin.ModelAdmin):
+    list_display = ("file_name", 'get_full_name')
+
+    @display(description="Full name")
+    def get_full_name(self, obj):
+        return obj
+
+
 admin.site.register(Book, BookAdmin)
 admin.site.register(Author, AuthorAdmin)
 admin.site.register(Address, AddressAdmin)
 admin.site.register(Country, CountryAdmin)
 admin.site.register(Review, ReviewAdmin)
+admin.site.register(Profile, ProfileAdmin)

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_title %}
+Create profile
+{% endblock %}
+
+{% block css_styles %}
+<link rel="stylesheet" href="{% static 'bookstore/styles.css' %}">
+{% endblock %}
+
+{% block content %}
+<ul>
+    {% for profile in profiles %}
+    <li><img src="{{ profile.image.url }}"/></li>
+    {% endfor %}
+</ul>
+{% endblock %}
