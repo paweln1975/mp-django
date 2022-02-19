@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_title %}
+All reviews
+{% endblock %}
+
+{% block css_styles %}
+<link rel="stylesheet" href="{% static 'bookstore/styles.css' %}">
+{% endblock %}
+
+{% block content %}
+<h1>
+    {{ review.user_name }}
+</h1>
+<h2>
+    Rating: {{ review.rating }}
+</h2>
+<p>
+    {{ review.review_text }}
+</p>
+
+{% endblock %}
