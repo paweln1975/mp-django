@@ -59,12 +59,6 @@ class ReviewListView(ListView):
         return data
 
 
-class ReviewDetailView(DetailView):
-    template_name = "bookstore/review_detail.html"
-    model = Review
-    context_object_name = "review"
-
-
 class ThankYouView(TemplateView):
     template_name = "bookstore/thank_you.html"
 
@@ -110,3 +104,27 @@ class ProfilesView(ListView):
     template_name = "bookstore/profiles.html"
     model = Profile
     context_object_name = "profiles"
+
+
+class ReviewDetailView(DetailView):
+    template_name = "bookstore/review_detail.html"
+    model = Review
+    context_object_name = "review"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        loaded_review = self.object
+        request = self.request
+        fav_id = request.session.get("favourite_review")
+        context["is_favourite"] = fav_id == str(loaded_review.id)
+        return context
+
+
+class AddFavouriteView(View):
+    def post(self, request):
+        review_id = request.POST["review_id"]
+        fav_review = get_object_or_404(Review, pk=review_id)
+        request.session["favourite_review"] = review_id
+        return HttpResponseRedirect("" + review_id)
+
+
