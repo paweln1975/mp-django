@@ -29,7 +29,7 @@ class Tag(models.Model):
 class Post(models.Model):
     title = models.CharField(max_length=100, null=False)
     excerpt = models.CharField(max_length=200, null=False)
-    image_name = models.CharField(max_length=32, null=False)
+    image = models.ImageField(upload_to="images", null=True)
     post_date = models.DateField(auto_now=True)
     slug = models.SlugField(default="", blank=True, null=False, db_index=True, unique=True)
     author = models.ForeignKey(Author, on_delete=models.SET_NULL, null=True, related_name="posts")
@@ -48,3 +48,10 @@ class Post(models.Model):
 
     def get_absolute_url(self):
         return reverse("post_detail", args=[self.slug])
+
+
+class Comment(models.Model):
+    user_name = models.CharField(max_length=120)
+    user_email = models.EmailField()
+    text = models.TextField(max_length=400)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="comments")
