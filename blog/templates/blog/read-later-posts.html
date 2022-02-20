@@ -1,0 +1,26 @@
+{% extends "blog.html" %}
+{% load static %}
+
+{% block page_title %}
+My stored posts
+{% endblock %}
+
+{% block css_styles %}
+<link rel="stylesheet" href="{% static 'blog/post.css' %}">
+<link rel="stylesheet" href="{% static 'blog/all-posts.css' %}">
+{% endblock %}
+
+{% block content %}
+<section id="all-posts">
+    {% if has_posts %}
+    <h2>Posts marked to read later</h2>
+    {% else %}
+    <h2>You didn't marked any posts for later reading!</h2>
+    {% endif %}
+    <ul>
+        {% for post in posts %}
+        {% include "blog/includes/post.html" %}
+        {% endfor  %}
+    </ul>
+</section>
+{% endblock %}
