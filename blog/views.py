@@ -39,12 +39,8 @@ class PostDetailView(View):
 
     def get(self, request, slug):
         post = get_object_or_404(Post, slug=slug)
-        context = {
-            self.context_object_name: post,
-            "tags": post.tags.all(),
-            "comment_form": CommentForm(),
-            "comments": post.comments.all()
-        }
+        context = self.create_context(post, CommentForm())
+
         return render(request, self.template_name, context)
 
     def post(self, request, slug):
@@ -57,12 +53,26 @@ class PostDetailView(View):
             comment.save()
             return HttpResponseRedirect(reverse("post-detail-page", args=[slug]))
 
+        context = self.create_context(post, comment_form)
+        return render(request, self.template_name, context)
+
+    def create_context(self, post, comment_form):
         context = {
             self.context_object_name: post,
             "tags": post.tags.all(),
             "comment_form": comment_form,
-            "comments": post.comments.all()
+            "comments": post.comments.all().order_by("-id")
         }
-        return render(request, self.template_name, context)
+        return context
 
 
+class ReadLaterView(View):
+    def post(self, request):
+        stored_post = request.session.get("stored_id")
+        if stored_post is None:
+            stored_post = []
+        post_id = int(request.POST["post_id"])
+        if post_id not in stored_post:
+            stored_post.append(post_id)
+
+        return HttpResponseRedirect("/")
